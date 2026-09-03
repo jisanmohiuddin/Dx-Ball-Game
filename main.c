@@ -13,11 +13,10 @@ typedef struct Brick {
     Color color;
 } Brick;
 
-bool ballLaunched = false;
-Vector2 ballSpeed = { 0, 0 };
-float speedValue = 5.0f;
-
 int main(void) {
+    bool ballLaunched = false;
+    Vector2 ballSpeed = { 0, 0 };
+    float speedValue = 5.0f;
     InitWindow(screenWidth, screenHeight, "DX Ball");
     SetTargetFPS(60);
 
@@ -53,16 +52,58 @@ int main(void) {
     while(!WindowShouldClose()){
         if(IsKeyDown(KEY_RIGHT)&&(paddle.x+paddle.width)<screenWidth-5){
             paddle.x+=7.0;
-            ballPos.x = paddle.x + (paddle.width / 2.0f);
-            ballPos.y = paddle.y - ballRadius;
         }
         if (IsKeyDown(KEY_LEFT) && paddle.x > 5){
             paddle.x+=-7.0;
+        }
+
+        if (!ballLaunched) {
             ballPos.x = paddle.x + (paddle.width / 2.0f);
             ballPos.y = paddle.y - ballRadius;
+
+            if (IsKeyPressed(KEY_ENTER)) {
+                ballLaunched = true;
+                ballSpeed = (Vector2){ speedValue, -speedValue };
+            }
         }
         
-        
+        if(ballLaunched){
+            ballPos.x += ballSpeed.x;
+            ballPos.y += ballSpeed.y;
+            if (ballPos.x <= (5 + ballRadius) || ballPos.x >= (screenWidth - 5 - ballRadius)) {
+                ballSpeed.x *= -1.0f; 
+            }
+            if (ballPos.y <= (50 + ballRadius)) {
+                ballSpeed.y *= -1.0f;
+            }
+
+            if (CheckCollisionCircleRec(ballPos, ballRadius, paddle)) {
+                if (ballSpeed.y > 0) { 
+                    ballSpeed.y *= -1.0f; 
+                    float hitPos = (ballPos.x - (paddle.x + paddle.width / 2.0f)) / (paddle.width / 2.0f);
+                    ballSpeed.x = hitPos * speedValue;
+                }
+            }
+            for (int i = 0; i < LINES_OF_BRICKS; i++) {
+                for (int j = 0; j < BRICKS_PER_LINE; j++) {
+                    if (bricks[i][j].active) {
+                        if (CheckCollisionCircleRec(ballPos, ballRadius, bricks[i][j].rect)) {
+                            bricks[i][j].active = false; 
+                            ballSpeed.y *= -1.0f;        
+                            score += 10;                  
+                        }
+                    }
+                }
+            }
+            if (ballPos.y >= screenHeight) {
+                lives--;
+                ballLaunched = false;
+                paddle.x = screenWidth / 2.0f - 60;
+                ballPos.x = paddle.x + (paddle.width / 2.0f);
+                ballPos.y = paddle.y - ballRadius;
+            }
+
+        }
 
         BeginDrawing();
             ClearBackground(darkBg);
