@@ -1,4 +1,8 @@
 🎮 DX-Ball Game
+![Game Screenshot](Cover.png)
+<p align="center">
+  <img src="screenshot.png" alt="DX-Ball Gameplay" width="600"/>
+</p>
 A classic 2D DX-Ball arcade game created using **C** and the **Raylib** library for academic evaluation.
 
 ✨ Features
