@@ -3,13 +3,14 @@
 <p align="center">
   <img src="screenshot.png" width="600"/>
 </p>
-A classic 2D DX-Ball arcade game created using **C** and the **Raylib** library for academic evaluation.
+A classic 2D DX-Ball arcade game created using C and the Raylib library for academic evaluation.
 
 ✨ Features
-🕹️ **Interactive Menu:** Main menu, level selection, and help screens.
-⚡ **Difficulty Modes:** Easy and Hard modes with customized gameplay physics.
+🕹️ **Interactive Menu:** Main menu, level selection, about section and help screens.
+⚡ **Difficulty Modes:** Easy and Hard modes with customized gameplay physics.Each mode contains 3 levels
 🔊 **Audio & SFX:** Background music and dynamic sound effects for impacts.
 🧱 **Brick Mechanics:** Score calculating system, player lives (HP), and collision tracking.
+**Special Features:** 3 power-ups such as Multiball, Gun, Paddle expansion
 
 🛠️ Tech Stack & Tools
 Language: C
